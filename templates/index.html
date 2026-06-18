@@ -478,6 +478,15 @@
     <hr class="border-secondary my-5">
 
     <!-- 8. SUPPORT THE PROJECT SECTION -->
+    <script>
+    function handleQrError(imgEl, placeholderText) {
+        imgEl.style.display = 'none';
+        const placeholder = document.createElement('div');
+        placeholder.className = 'text-secondary small d-flex flex-column align-items-center justify-content-center h-100 w-100';
+        placeholder.innerHTML = `<span class="fs-4 mb-2">⚠️</span><strong class="text-white d-block mb-1">${placeholderText}</strong>`;
+        imgEl.parentElement.appendChild(placeholder);
+    }
+    </script>
     <section id="support" class="py-5" aria-labelledby="supportTitle">
         <div class="text-center mb-5">
             <h2 id="supportTitle" class="display-5 text-white mb-2">Support the Project</h2>
@@ -491,7 +500,7 @@
                     <h3 class="card-heading">Support via UPI</h3>
                     <p class="card-subheading">If you'd like to support this project, you can do so using UPI.</p>
                     <div class="qr-container">
-                        <img src="/static/img/google_upi_qr.png" class="qr-image" alt="UPI QR Code">
+                        <img src="{{ url_for('static', filename='img/google_upi_qr.png') }}" class="qr-image" alt="UPI QR Code" onerror="handleQrError(this, 'UPI QR Unavailable')">
                     </div>
                     <div class="action-wrapper">
                         <div class="upi-copy-wrapper">
@@ -509,7 +518,7 @@
                     <h3 class="card-heading">Support via PayPal</h3>
                     <p class="card-subheading">If you'd like to support this project, you can do so using PayPal.</p>
                     <div class="qr-container">
-                        <img src="/static/img/paypal_qr.png" class="qr-image" alt="PayPal QR Code">
+                        <img src="{{ url_for('static', filename='img/paypal_qr.png') }}" class="qr-image" alt="PayPal QR Code" onerror="handleQrError(this, 'PayPal QR Unavailable')">
                     </div>
                     <div class="action-wrapper">
                         <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer" id="paypalSupportBtn" class="paypal-support-btn">

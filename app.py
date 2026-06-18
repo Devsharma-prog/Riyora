@@ -47,18 +47,27 @@ def run_startup_check():
             print("⚠ GOOGLE_CLIENT_SECRET missing")
         print("⚠ Google OAuth is disabled/unconfigured.")
         
-    # PayPal Check
+    # PayPal Check & Validation
     paypal_id = os.getenv("PAYPAL_CLIENT_ID")
     paypal_secret = os.getenv("PAYPAL_SECRET")
+    paypal_mode = os.getenv("PAYPAL_MODE", "sandbox").lower()
+    
     if paypal_id and paypal_secret:
-        print("✓ PAYPAL_CLIENT_ID")
-        print("✓ PAYPAL_SECRET")
+        if paypal_mode == "live":
+            print("✓ PayPal Live Mode Active")
+        else:
+            print("✓ PayPal Sandbox Mode Active")
     else:
-        if not paypal_id:
-            print("⚠ PAYPAL_CLIENT_ID missing")
-        if not paypal_secret:
-            print("⚠ PAYPAL_SECRET missing")
-        print("⚠ PayPal credentials not configured. Mock payment mode enabled.")
+        print("⚠ PayPal Configuration Missing")
+
+    # Debugging logs
+    api_base_url = "https://api-m.paypal.com" if paypal_mode == "live" else "https://api-m.sandbox.paypal.com"
+    qr_image_path = os.path.abspath(os.path.join("static", "img", "paypal_qr.png"))
+    qr_image_exists = os.path.exists(qr_image_path)
+    print(f"Resolved PayPal Mode: {paypal_mode}")
+    print(f"Resolved API Base URL: {api_base_url}")
+    print(f"QR Image Path: {qr_image_path}")
+    print(f"Image Exists: {qr_image_exists}")
         
     # UPI Check
     upi_id = os.getenv("UPI_ID")
@@ -83,6 +92,13 @@ secret_key = os.getenv("SECRET_KEY")
 if not secret_key:
     raise RuntimeError("SECRET_KEY environment variable is required")
 app.secret_key = secret_key
+
+
+def get_paypal_api_base():
+    mode = os.getenv("PAYPAL_MODE", "sandbox").lower()
+    if mode == "live":
+        return "https://api-m.paypal.com"
+    return "https://api-m.sandbox.paypal.com"
 
 # Configure PayPal
 app.config['PAYPAL_CLIENT_ID'] = os.getenv("PAYPAL_CLIENT_ID")
@@ -653,7 +669,7 @@ def create_order():
         return jsonify({"id": mock_id, "status": "CREATED"})
 
     response = requests.post(
-        "https://api-m.sandbox.paypal.com/v2/checkout/orders",
+        f"{get_paypal_api_base()}/v2/checkout/orders",
         auth=HTTPBasicAuth(paypal_client, paypal_secret),
         headers={"Content-Type": "application/json"},
         json={
@@ -715,7 +731,7 @@ def capture_payment():
         return jsonify({"status": "success", "order_id": order_db_id})
 
     # Standard API Execution
-    capture_url = f"https://api-m.sandbox.paypal.com/v2/checkout/orders/{order_id}/capture"
+    capture_url = f"{get_paypal_api_base()}/v2/checkout/orders/{order_id}/capture"
     try:
         response = requests.post(
             capture_url,
