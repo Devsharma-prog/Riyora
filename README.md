@@ -6,6 +6,23 @@ Riyora started as an e-commerce project and evolved into a portfolio application
 
 > This project is intended for educational and portfolio purposes only. Products, orders, and payments are part of a demonstration environment and do not represent a real commercial store.
 
+
+## Live Demo
+
+https://riyora.onrender.com
+
+> **Note**
+>
+> This application is hosted on Render's free tier.
+> Initial loading may take up to 60 seconds if the server is sleeping.
+
+## Features
+
+- Google OAuth Authentication
+- Admin Dashboard
+- PayPal Integration
+- UPI Support
+- Dark / Light Theme
 ## Features
 
 * Google OAuth Authentication
