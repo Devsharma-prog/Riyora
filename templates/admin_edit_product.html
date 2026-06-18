@@ -1,0 +1,75 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75 animate-fade-in-up">
+    <div class="col-md-6">
+        <div class="glass-card shadow-lg p-4">
+            
+            <div class="text-center mb-4">
+                <h2 class="h3 text-white">Edit Product</h2>
+                <p class="text-secondary small">Modify parameters for ID: #{{ product.id }}</p>
+            </div>
+
+            <form method="POST" aria-label="Edit Product Form">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <!-- Name Input -->
+                <div class="mb-3">
+                    <label for="name" class="form-label text-secondary small">Product Name</label>
+                    <input class="form-control form-input-custom" 
+                           type="text" 
+                           id="name" 
+                           name="name" 
+                           value="{{ product.name }}" 
+                           required>
+                </div>
+
+                <!-- Price Input -->
+                <div class="mb-3">
+                    <label for="price" class="form-label text-secondary small">Price (USD)</label>
+                    <input class="form-control form-input-custom" 
+                           type="number" 
+                           step="0.01" 
+                           id="price" 
+                           name="price" 
+                           value="{{ product.price }}" 
+                           required>
+                </div>
+
+                <!-- Stock Level Input -->
+                <div class="mb-3">
+                    <label for="stock" class="form-label text-secondary small">Stock Allocation</label>
+                    <input class="form-control form-input-custom" 
+                           type="number" 
+                           id="stock" 
+                           name="stock" 
+                           value="{{ product.stock }}" 
+                           required>
+                </div>
+
+                <!-- Image Input -->
+                <div class="mb-4">
+                    <label for="image" class="form-label text-secondary small">Image Filename</label>
+                    <input class="form-control form-input-custom" 
+                           type="text" 
+                           id="image" 
+                           name="image" 
+                           value="{{ product.image }}" 
+                           required>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <a href="/admin_dashboard" class="btn btn-secondary-custom flex-grow-1 py-3 text-center">
+                        Cancel
+                    </a>
+                    <button class="btn btn-primary-custom flex-grow-1 py-3" style="background:#f59e0b; border-color:#f59e0b;">
+                        Update Product
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

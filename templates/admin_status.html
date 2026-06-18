@@ -1,0 +1,38 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="mb-5">
+        <h1 class="h2 text-white mb-1">System Diagnostic Status</h1>
+        <p class="text-secondary small mb-0">Hardware diagnostics, file structures, runtime paths, and environment validations</p>
+    </div>
+
+    <!-- Status specifications -->
+    <div class="glass-card shadow-lg p-5">
+        <h3 class="h5 text-white mb-4 border-bottom border-secondary pb-3">Runtime Environment Diagnostics</h3>
+        
+        <div class="row g-4">
+            {% for key, val in system_status.items() %}
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20 h-100 d-flex flex-column justify-content-between">
+                    <span class="text-secondary-emphasis small d-block mb-1 text-uppercase tracking-wider" style="font-size: 0.75rem;">
+                        {{ key.replace('_', ' ') }}
+                    </span>
+                    <strong class="text-white small word-break-all">{{ val }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bg-dark bg-opacity-10 border border-secondary border-opacity-20 rounded p-4 mt-5 d-flex align-items-center gap-3">
+            <span class="h2 m-0 text-success">⚙️</span>
+            <div>
+                <strong class="text-white d-block mb-1">System Integrity Check Passed</strong>
+                <span class="text-secondary small">The SQLite database schema maps correctly, Gunicorn web configs align, and startup validation checks passed.</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

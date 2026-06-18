@@ -1,0 +1,630 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+
+    <!-- 1. HERO SECTION -->
+    <header class="row py-5 align-items-center g-5 text-center text-lg-start" aria-label="Hero Introduction">
+        <div class="col-lg-7">
+            <span class="hero-badge-custom mb-4">
+                <svg class="badge-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--badge-icon);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 1a4 4 0 0 0-4 4v2H3a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a4 4 0 0 0-4-4zm3 6H5V5a3 3 0 0 1 6 0v2z"/>
+                </svg>
+                Portfolio Demonstration & Engineering Showcase
+            </span>
+            <h1 class="display-4 fw-bold mb-3 hero-gradient-text" style="font-family: var(--font-display); background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Riyora
+            </h1>
+            <h2 class="h4 text-light-emphasis mb-4">
+                Modern Authentication, Security & Commerce Platform
+            </h2>
+            <p class="lead text-secondary mb-4">
+                A portfolio-grade web application demonstrating secure authentication, payment integration, modern UI/UX design, privacy-first architecture, and production deployment practices.
+            </p>
+            <div class="d-flex justify-content-center justify-content-lg-start gap-3 flex-wrap">
+                <a href="#products" class="btn btn-primary-custom px-4 py-3">Explore Catalog</a>
+                <a href="#features" class="btn btn-secondary-custom px-4 py-3">View Case Study Specifications</a>
+            </div>
+        </div>
+        
+        <!-- Animated Hero Statistics Grid -->
+        <div class="col-lg-5">
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <div class="hero-stats-card p-4">
+                        <div class="h2 text-accent-color fw-bold mb-1">Google</div>
+                        <div class="text-secondary small">OAuth 2.0 Access</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="hero-stats-card p-4">
+                        <div class="h2 text-success fw-bold mb-1">Active</div>
+                        <div class="text-secondary small">Security Shield</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="hero-stats-card p-4">
+                        <div class="h2 text-white fw-bold mb-1">PayPal</div>
+                        <div class="text-secondary small">PayPal Checkout</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="hero-stats-card p-4">
+                        <div class="h2 text-warning fw-bold mb-1">Docker</div>
+                        <div class="text-secondary small">Production-Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 1.5. PORTFOLIO SHOWCASE CAPABILITIES -->
+    <section class="py-5" id="portfolio-capabilities" aria-labelledby="showcaseCapabilitiesTitle">
+        <div class="text-center mb-5">
+            <h2 id="showcaseCapabilitiesTitle" class="h4 text-uppercase text-secondary tracking-wider">Demonstrated Capabilities</h2>
+            <p class="text-secondary small">Key areas of engineering excellence integrated inside this platform</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">🔑 Authentication</strong>
+                    <p class="small text-secondary m-0">Strict Google OAuth 2.0 federated login interface. Fully removes insecure local forms and password storage, adhering to zero-trust passwordless authentication.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">🛡️ Security</strong>
+                    <p class="small text-secondary m-0">Layered defenses including Double-Submit WTF-CSRF protection, rate limiting on sensitive forms, automatic 15-minute inactivity timers, and Secure/HttpOnly session cookies.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">💳 Payments</strong>
+                    <p class="small text-secondary m-0">PayPal checkout integration combined with static UPI QR payments, demonstrating secure external payment flows.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">🚢 Deployment</strong>
+                    <p class="small text-secondary m-0">Dockerized container stack utilizing Gunicorn WSGI servers and a custom REST health check endpoint (/health) to verify environmental diagnostics.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">💎 UI/UX Design</strong>
+                    <p class="small text-secondary m-0">Modern glassmorphic Stripe/Linear design style featuring full prefers-reduced-motion support, keyboard outline accessibility, and a seamless Dark/Light theme toggler.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100 p-4">
+                    <strong class="text-white d-block h5 mb-3">📁 Database Management</strong>
+                    <p class="small text-secondary m-0">Relational SQLite schema featuring automated column migrations, telemetry logging counters, and data privacy cleanup jobs executing on request triggers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 2. PROJECT CASE STUDY SHOWCASE -->
+    <section id="features" class="py-5" aria-labelledby="caseStudyTitle">
+        <h2 id="caseStudyTitle" class="display-5 fw-bold text-center mb-5 text-white">Project Case Study</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">🔍 Why This Project Was Built</h3>
+                    <p class="small text-secondary m-0">
+                        Designed to serve as a comprehensive staff-level engineering artifact. It bridges the gap between typical tutorial apps and complex enterprise SaaS systems by emphasizing defensive security, clean modular routes, and a premium visual aesthetic.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">🛠️ Technologies & Packages</h3>
+                    <p class="small text-secondary m-0">
+                        Built with Flask as the microframework, SQLite for database isolation, and security extensions (WTForms for CSRF protection, Limiter for rate limits). Local QR rendering is driven by qrcode and pillow.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">🛡️ Security Challenges Solved</h3>
+                    <p class="small text-secondary m-0">
+                        Mitigates vulnerabilities including SQL Injection (parameterized queries), CSRF (WTF-CSRF middleware), session hijacking (HttpOnly & SameSite cookies), and brute-force vectors (rate-limiting endpoints).
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">🚢 Deployment Readiness</h3>
+                    <p class="small text-secondary m-0">
+                        Fully containerized with a Dockerfile and docker-compose.yml configuration using Gunicorn for production execution. Includes a secure `/health` checks router suited for cloud environments like Render and Railway.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">🎓 Educational Purpose</h3>
+                    <p class="small text-secondary m-0">
+                        Serves as a safe demonstration platform for verifying real-world payment SDK workflows, secure session logic, and OAuth callback handling in Python, providing recruiter-ready technical transparency.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="glass-card h-100">
+                    <h3 class="h5 text-white mb-3">⚙️ Automated Administration</h3>
+                    <p class="small text-secondary m-0">
+                        Equipped with a secure role-based access control (RBAC) mechanism. Restricts administrator privileges dynamically to the designated owner email read from environment parameters.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ANIMATED TECHNOLOGY STACK DISPLAY -->
+    <section class="py-5" aria-labelledby="techStackTitle">
+        <h2 id="techStackTitle" class="h4 text-uppercase text-secondary text-center tracking-wider mb-4">Technology Stack Showcase</h2>
+        <div class="tech-badge-grid text-white">
+            <div class="tech-badge-card">Python</div>
+            <div class="tech-badge-card">Flask</div>
+            <div class="tech-badge-card">SQLite</div>
+            <div class="tech-badge-card">Google OAuth</div>
+            <div class="tech-badge-card">PayPal</div>
+            <div class="tech-badge-card">Docker</div>
+            <div class="tech-badge-card">Gunicorn</div>
+            <div class="tech-badge-card">HTML5</div>
+            <div class="tech-badge-card">CSS3</div>
+            <div class="tech-badge-card">JavaScript</div>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 4. INTERACTIVE ARCHITECTURE SHOWCASE -->
+    <section id="architecture" class="py-5" aria-labelledby="archTitle">
+        <h2 id="archTitle" class="display-5 fw-bold text-center mb-5 text-white">Interactive Architecture Showcase</h2>
+        
+        <div class="row g-4 align-items-center justify-content-center">
+            
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">User</h3>
+                    <span class="small text-secondary">Browser Client</span>
+                </div>
+            </div>
+            
+            <div class="col-lg-1 col-md-1 d-none d-md-block text-center">
+                <div class="arch-arrow">➔</div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">Frontend</h3>
+                    <span class="small text-secondary">HTML5, CSS3, JS</span>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-1 d-none d-md-block text-center">
+                <div class="arch-arrow">➔</div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">Flask Backend</h3>
+                    <span class="small text-secondary">Modular routes</span>
+                </div>
+            </div>
+
+            <div class="col-lg-1 col-md-1 d-none d-md-block text-center">
+                <div class="arch-arrow">➔</div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">Auth Layer</h3>
+                    <span class="small text-secondary">Google OAuth 2.0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 align-items-center justify-content-center mt-3">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">Database</h3>
+                    <span class="small text-secondary">SQLite3 Isolation</span>
+                </div>
+            </div>
+            <div class="col-lg-1 col-md-1 d-none d-md-block text-center">
+                <div class="arch-arrow">➔</div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="arch-card">
+                    <h3 class="h6 text-white mb-2">Payment Provider</h3>
+                    <span class="small text-secondary">PayPal Integration</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 5. SECURITY SHOWCASE MATRIX -->
+    <section id="security" class="py-5" aria-labelledby="secShowcaseTitle">
+        <h2 id="secShowcaseTitle" class="display-5 fw-bold text-center mb-5 text-white">Security Dashboard</h2>
+        
+        <!-- Live Security Status Cards -->
+        <div class="row g-3 mb-5">
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">Google OAuth</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">🔑</span>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">Admin Protection</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">🛡️</span>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">CSRF Protection</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">🛡️</span>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">Rate Limiting</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">⏱️</span>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">Secure Sessions</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">🍪</span>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="hero-stats-card p-3 d-flex align-items-center justify-content-between">
+                    <div class="text-start">
+                        <span class="text-secondary small d-block">Privacy Controls</span>
+                        <span class="fw-bold text-success small">✓ Active</span>
+                    </div>
+                    <span class="fs-4">🔒</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle border-secondary shadow-lg rounded overflow-hidden">
+                <thead>
+                    <tr class="border-bottom border-secondary bg-dark">
+                        <th scope="col" class="py-3 px-4 text-white">Security Protections</th>
+                        <th scope="col" class="py-3 text-white">Purpose & Mechanics</th>
+                        <th scope="col" class="py-3 text-white">Recruiter/Hiring Value</th>
+                        <th scope="col" class="py-3 text-center text-white">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Google OAuth Verification</td>
+                        <td class="text-secondary small">Restricts authentication to Google Identity Provider flow, eliminating credentials handling.</td>
+                        <td class="text-secondary small">Demonstrates compliance with modern passwordless federated standards.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">CSRF Protection</td>
+                        <td class="text-secondary small">WTF-CSRF token verification across checkout, cart requests, and telemetry logs.</td>
+                        <td class="text-secondary small">Prevents unauthorized state changes via cross-site requests.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Rate Limiting</td>
+                        <td class="text-secondary small">Protects checkout and login endpoints against brute force using memory-backed Flask-Limiter.</td>
+                        <td class="text-secondary small">Blocks automated stuffing and denial-of-service attempts.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Session Expiration</td>
+                        <td class="text-secondary small">Inactivity logout cleans session data after 15 minutes of idle status.</td>
+                        <td class="text-secondary small">Restricts window for session theft on shared client systems.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Environment Variables</td>
+                        <td class="text-secondary small">Loads payment client tokens, keys, and DB paths via python-dotenv, excluding real keys from source.</td>
+                        <td class="text-secondary small">Zero hardcoded secrets. Avoids token leaks.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Secure Cookies</td>
+                        <td class="text-secondary small">Sets HttpOnly=True and SameSite=Lax headers on session tokens.</td>
+                        <td class="text-secondary small">Prevents XSS cookie access and mitigates CSRF scope.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Input Validation</td>
+                        <td class="text-secondary small">Strict form parameter checks, escaping database queries dynamically.</td>
+                        <td class="text-secondary small">Defends against SQL injection and cross-site scripting (XSS).</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-semibold px-4 text-white">Privacy Data Retention</td>
+                        <td class="text-secondary small">Removes guest logs and orders older than 24 hours automatically from database.</td>
+                        <td class="text-secondary small">Shows engineering respect for storage lifecycle and user privacy.</td>
+                        <td class="text-center"><span class="sec-badge-implemented">✓ Active</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 6. PRIVACY DASHBOARD -->
+    <section class="py-5" aria-labelledby="privacyDashboardTitle">
+        <div class="glass-card text-center p-4">
+            <h2 id="privacyDashboardTitle" class="h4 text-white mb-3">🛡️ Privacy Dashboard</h2>
+            <p class="text-secondary small mb-4">
+                As a demo platform, user privacy is prioritized. Review our database cleaning policy below:
+            </p>
+            <div class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <div class="p-3 border border-secondary rounded bg-dark">
+                        <span class="privacy-icon-indicator"></span>
+                        <span class="text-light small">Demo Orders Expired Automatically</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border border-secondary rounded bg-dark">
+                        <span class="privacy-icon-indicator"></span>
+                        <span class="text-light small">Guest Session Cookies Expired</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border border-secondary rounded bg-dark">
+                        <span class="privacy-icon-indicator"></span>
+                        <span class="text-light small">Registered Google Users Kept Intact</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 7. PRODUCTS CATALOG -->
+    <section id="products" class="py-5" aria-labelledby="catalogTitle">
+        <h2 id="catalogTitle" class="display-5 fw-bold text-center mb-5 text-white">Demo Products Catalog</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for product in products %}
+            <div class="col">
+                <article class="glass-card h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <!-- Product Image Zoom -->
+                        <div class="product-image-container mb-3">
+                            <img src="{{ url_for('static', filename='img/' + product.image) }}" 
+                                 class="product-image-zoom img-fluid" 
+                                 alt="{{ product.name }} product preview"
+                                 loading="lazy">
+                        </div>
+
+                        <!-- Product Title -->
+                        <h3 class="h5 text-white">
+                            <a href="/product/{{ product.id }}" class="text-white text-decoration-none">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+
+                        <!-- Stock and Availability Details -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-success fw-bold h5 mb-0">$ {{ product.price }}</span>
+                            {% if product.stock == 0 %}
+                                <span class="badge bg-danger" aria-label="Out of stock">Out of Stock</span>
+                            {% elif product.stock <= 5 %}
+                                <span class="badge bg-warning text-dark" aria-label="Low stock indicator">Only {{ product.stock }} left!</span>
+                            {% else %}
+                                <span class="badge bg-success" aria-label="In stock indicator">In Stock ({{ product.stock }})</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart action with CSRF -->
+                    <div>
+                        {% if product.stock > 0 %}
+                        <form action="/add_to_cart" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-primary-custom w-100 d-flex align-items-center justify-content-center gap-2" aria-label="Add {{ product.name }} to cart">
+                                Add to Cart 🛒
+                            </button>
+                        </form>
+                        {% else %}
+                        <button class="btn btn-secondary-custom w-100" disabled aria-label="Product is out of stock">
+                            Out of Stock
+                        </button>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 8. SUPPORT THE PROJECT SECTION -->
+    <section id="support" class="py-5" aria-labelledby="supportTitle">
+        <div class="text-center mb-5">
+            <h2 id="supportTitle" class="display-5 text-white mb-2">Support the Project</h2>
+            <p class="text-secondary">If you found this project useful, you can support future development.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Indian Users: UPI -->
+            <div class="col-md-6">
+                <div class="support-card">
+                    <h3 class="card-heading">Support via UPI</h3>
+                    <p class="card-subheading">If you'd like to support this project, you can do so using UPI.</p>
+                    <div class="qr-container">
+                        <img src="/static/img/google_upi_qr.png" class="qr-image" alt="UPI QR Code">
+                    </div>
+                    <div class="action-wrapper">
+                        <div class="upi-copy-wrapper">
+                            <span class="upi-copy-id" id="upiIdText">{{ upi_id }}</span>
+                            <button type="button" class="upi-copy-btn-custom" id="copyUpiBtn">Copy</button>
+                        </div>
+                    </div>
+                    <p class="helper-text">Scan the QR code or copy the UPI ID.</p>
+                </div>
+            </div>
+
+            <!-- International Users: PayPal -->
+            <div class="col-md-6">
+                <div class="support-card">
+                    <h3 class="card-heading">Support via PayPal</h3>
+                    <p class="card-subheading">If you'd like to support this project, you can do so using PayPal.</p>
+                    <div class="qr-container">
+                        <img src="/static/img/paypal_qr.png" class="qr-image" alt="PayPal QR Code">
+                    </div>
+                    <div class="action-wrapper">
+                        <a href="https://www.paypal.com" target="_blank" rel="noopener noreferrer" id="paypalSupportBtn" class="paypal-support-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.01 7.21C20.01 4.2 17.65 2 13.9 2H6.69c-.56 0-1.04.42-1.12.98L3.03 20.35a.693.693 0 0 0 .68.79h4.37c.45 0 .84-.34.9-.79L10.3 12.5c.06-.45.45-.79.9-.79h1.72c3.42 0 6.07-1.68 6.88-5.32.14-.62.21-1.24.21-1.18zm-2.91 0c-.57 2.58-2.67 3.8-5.59 3.8H9.79c-.38 0-.71.29-.76.67l-.88 6.13-.19 1.34H6.38l2.25-15.65h5.27c2.61 0 4.19 1.34 3.8 3.71z"/>
+                            </svg>
+                            Pay with PayPal
+                        </a>
+                    </div>
+                    <p class="helper-text">Scan the QR code or use the PayPal button.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-secondary my-5">
+
+    <!-- 9. CONTACT / CONNECT SECTION -->
+    <section id="contact" class="py-5" aria-labelledby="contactTitle">
+        <div class="text-center mb-5">
+            <h2 id="contactTitle" class="display-5 text-white mb-2">Let's Connect</h2>
+            <p class="text-secondary col-md-8 mx-auto">Have feedback, project ideas or questions about Riyora? I'd be happy to hear from you.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Left: Contact Form -->
+            <div class="col-lg-7">
+                <div class="support-card text-start h-100" style="align-items: stretch;">
+                    <form id="contactForm" novalidate class="w-100">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="contactName" class="form-label text-white small fw-semibold">Full Name</label>
+                                <input type="text" class="form-control bg-dark border-secondary text-white py-2.5" id="contactName" placeholder="Monkey D Luffy" required>
+                                <div class="invalid-feedback">Full name is required.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="contactEmail" class="form-label text-white small fw-semibold">Email Address</label>
+                                <input type="email" class="form-control bg-dark border-secondary text-white py-2.5" id="contactEmail" placeholder="zoro@example.com" required>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="contactSubject" class="form-label text-white small fw-semibold">Subject</label>
+                                <input type="text" class="form-control bg-dark border-secondary text-white py-2.5" id="contactSubject" placeholder="Project collaboration / feedback" required>
+                                <div class="invalid-feedback">Subject is required.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="contactMessage" class="form-label text-white small fw-semibold">Message</label>
+                                <textarea class="form-control bg-dark border-secondary text-white py-2.5" id="contactMessage" rows="5" placeholder="Your message here..." required></textarea>
+                                <div class="invalid-feedback">Message must be at least 10 characters long.</div>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+                                    Send Message ✉️
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right: Contact Information Card -->
+            <div class="col-lg-5">
+                <div class="support-card text-start h-100" style="align-items: stretch; text-align: left; justify-content: flex-start;">
+                    <div>
+                        <h3 class="h4 text-white mb-2">Dev Sharma</h3>
+                        <p class="text-accent-color small fw-semibold mb-4" style="white-space: pre-line;">B.Tech CSE Student
+                        Full Stack & AI Enthusiast</p>
+                        
+                        <div class="d-flex flex-column gap-4 mt-2">
+                            <!-- Location -->
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="text-accent-color fs-5">📍</div>
+                                <div>
+                                    <span class="d-block text-white small fw-bold">Location</span>
+                                    <span class="text-secondary small">Haridwar, Uttarakhand, India</span>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="text-accent-color fs-5">✉️</div>
+                                <div class="w-100">
+                                    <span class="d-block text-white small fw-bold">Email</span>
+                                    <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
+                                        <a href="mailto:sharmavashudev99@gmail.com" class="text-secondary small text-decoration-none" id="contactEmailText">sharmavashudev99@gmail.com</a>
+                                        <button type="button" class="btn btn-sm btn-secondary-custom px-2 py-0.5" id="copyContactEmailBtn" style="font-size: 0.75rem;">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GitHub -->
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="text-accent-color fs-5">💻</div>
+                                <div>
+                                    <span class="d-block text-white small fw-bold">GitHub</span>
+                                    <a href="https://github.com/Devsharma-prog" target="_blank" rel="noopener noreferrer" class="text-secondary small text-decoration-none hover-underline">Devsharma-prog ➔</a>
+                                </div>
+                            </div>
+
+                            {% if linkedin_url %}
+                            <!-- LinkedIn -->
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="text-accent-color fs-5">🔗</div>
+                                <div>
+                                    <span class="d-block text-white small fw-bold">LinkedIn</span>
+                                    <a href="{{ linkedin_url }}" target="_blank" rel="noopener noreferrer" class="text-secondary small text-decoration-none hover-underline">Dev Sharma ➔</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

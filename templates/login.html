@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75 animate-fade-in-up">
+    <div class="col-md-6 col-lg-5">
+        <div class="glass-card shadow-lg p-5">
+            
+            <div class="text-center mb-4">
+                <span class="display-4 mb-2 d-block" role="img" aria-label="Secure Shield">🔒</span>
+                <h1 class="h2 text-white font-display fw-bold">Welcome to Riyora</h1>
+                <p class="text-secondary small mt-2">Sign in securely using your Google Account.</p>
+            </div>
+
+            <!-- Google OAuth button -->
+            <div class="my-4">
+                <a href="/login/google" class="btn btn-primary-custom w-100 py-3 d-flex align-items-center justify-content-center gap-3" style="font-size: 1.05rem;">
+                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M15.545 6.558a8.96 8.96 0 0 1 .089 1.442c0 2.457-.805 4.545-2.203 5.836-.008.008-.016.015-.024.022-1.391 1.22-3.23 1.942-5.407 1.942-4.42 0-8-3.58-8-8s3.58-8 8-8c2.16 0 3.97.79 5.37 2.1l-2.14 2.14c-.38-.36-.97-.78-1.77-.78-1.52 0-2.76 1.26-2.76 2.8s1.24 2.8 2.76 2.8c1.63 0 2.24-1.12 2.34-1.7h-2.34v-2.8h5.36z"/>
+                    </svg>
+                    Continue with Google
+                </a>
+            </div>
+
+            <!-- Benefits section -->
+            <div class="border-top border-secondary pt-4 mt-4">
+                <h2 class="h6 text-white mb-3 text-uppercase tracking-wider" style="font-size: 0.8rem;">Platform Security Benefits</h2>
+                <ul class="list-unstyled d-flex flex-column gap-2 text-start m-0 p-0">
+                    <li class="d-flex align-items-start gap-2 text-secondary small">
+                        <span class="text-success fw-bold">✓</span>
+                        <span>Secure Authentication</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2 text-secondary small">
+                        <span class="text-success fw-bold">✓</span>
+                        <span>Verified Google Identity</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2 text-secondary small">
+                        <span class="text-success fw-bold">✓</span>
+                        <span>No Password Storage</span>
+                    </li>
+                    <li class="d-flex align-items-start gap-2 text-secondary small">
+                        <span class="text-success fw-bold">✓</span>
+                        <span>Portfolio Demonstration Project</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

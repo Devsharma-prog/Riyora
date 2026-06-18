@@ -1,0 +1,11 @@
+.env
+shop.db
+*.sqlite3
+instance/
+venv/
+**/__pycache__/
+.env.local
+.env.production
+*.pyc
+.pytest_cache/
+.DS_Store

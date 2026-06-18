@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="mb-5">
+        <h1 class="h2 text-white mb-1">Sales Metrics</h1>
+        <p class="text-secondary small mb-0">Overview of completed order revenues and volumes in demo mode</p>
+    </div>
+
+    <!-- Sales Stats Grid -->
+    <div class="row g-4 justify-content-center">
+        
+        <!-- Total Sales Revenue -->
+        <div class="col-md-6">
+            <div class="glass-card text-center p-5 shadow-lg">
+                <span class="display-4 d-block mb-3" role="img" aria-label="Money sack icon">💰</span>
+                <h3 class="text-secondary h5 mb-2">Total Sales Revenue</h3>
+                <div class="display-4 text-success fw-bold mb-2">
+                    ${{ "%.2f"|format(total_sales) if total_sales else "0.00" }}
+                </div>
+                <p class="small text-secondary m-0">Sum of amounts for orders marked as COMPLETED</p>
+            </div>
+        </div>
+
+        <!-- Total Orders Volume -->
+        <div class="col-md-6">
+            <div class="glass-card text-center p-5 shadow-lg">
+                <span class="display-4 d-block mb-3" role="img" aria-label="Receipt invoice icon">🧾</span>
+                <h3 class="text-secondary h5 mb-2">Total Orders Placed</h3>
+                <div class="display-4 text-white fw-bold mb-2">
+                    {{ total_orders if total_orders else 0 }}
+                </div>
+                <p class="small text-secondary m-0">Cumulative count of orders stored in SQLite database</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

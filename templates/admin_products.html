@@ -1,0 +1,115 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div>
+            <h1 class="h2 text-white mb-1">Products Console</h1>
+            <p class="text-secondary small mb-0">Manage catalog inventory, pricing, and stock allocations</p>
+        </div>
+        <button class="btn btn-primary-custom" style="background:#f59e0b; border-color:#f59e0b;" data-bs-toggle="collapse" data-bs-target="#addProductCollapse" aria-expanded="false" aria-controls="addProductCollapse">
+            ➕ Add New Product
+        </button>
+    </div>
+
+    <!-- Add Product Collapse panel -->
+    <div class="collapse mb-5" id="addProductCollapse">
+        <div class="glass-card shadow-lg p-4">
+            <h3 class="h5 text-white mb-4">Catalog New Product</h3>
+            <form action="/admin_add_product" method="POST">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label text-secondary small">Product Name</label>
+                        <input type="text" class="form-control form-input-custom" id="name" name="name" placeholder="e.g. Ergonomic Mouse" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="price" class="form-label text-secondary small">Price (USD)</label>
+                        <input type="number" step="0.01" class="form-control form-input-custom" id="price" name="price" placeholder="25.00" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="stock" class="form-label text-secondary small">Stock Units</label>
+                        <input type="number" class="form-control form-input-custom" id="stock" name="stock" placeholder="10" value="10" required>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="image" class="form-label text-secondary small">Image Filename</label>
+                        <input type="text" class="form-control form-input-custom" id="image" name="image" placeholder="mouse.jpg" required>
+                        <div class="text-muted small mt-1">Image must be saved in the static/img directory</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-primary-custom px-4">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Products Catalog Grid -->
+    <div class="glass-card shadow-lg p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+            <h3 class="h5 text-white m-0">Database Inventory</h3>
+            {% if search_query %}
+                <span class="badge bg-secondary">Filtered by: "{{ search_query }}" <a href="/admin_products" class="text-warning text-decoration-none ms-2">Clear</a></span>
+            {% endif %}
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle border-secondary">
+                <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th scope="col" class="py-3">Product ID</th>
+                        <th scope="col" class="py-3">Preview</th>
+                        <th scope="col" class="py-3">Name</th>
+                        <th scope="col" class="py-3 text-center">Price</th>
+                        <th scope="col" class="py-3 text-center">Views</th>
+                        <th scope="col" class="py-3 text-center">Stock Level</th>
+                        <th scope="col" class="py-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td class="py-3 fw-bold text-white">#{{ product.id }}</td>
+                        <td class="py-3">
+                            <img src="{{ url_for('static', filename='img/' + product.image) }}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="{{ product.name }} thumbnail">
+                        </td>
+                        <td class="py-3 text-white fw-medium">{{ product.name }}</td>
+                        <td class="py-3 text-center text-success fw-bold">${{ product.price }}</td>
+                        <td class="py-3 text-center text-secondary">{{ product.views }}</td>
+                        <td class="py-3 text-center">
+                            {% if product.stock == 0 %}
+                                <span class="badge bg-danger" aria-label="No stock remaining">Out of Stock</span>
+                            {% elif product.stock <= 5 %}
+                                <span class="badge bg-warning text-dark" aria-label="Low stock indicator">Only {{ product.stock }} left!</span>
+                            {% else %}
+                                <span class="badge bg-success" aria-label="Adequate stock indicator">In Stock ({{ product.stock }})</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="/admin_edit_product/{{ product.id }}" class="btn btn-sm btn-secondary-custom px-3">
+                                    Edit
+                                </a>
+                                <form action="/admin_delete_product" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    <!-- CSRF Token -->
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger px-3">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

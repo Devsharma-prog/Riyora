@@ -1,0 +1,193 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <!-- Title / Heading -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div>
+            <h1 class="h2 text-white mb-1">Portfolio Insights Dashboard</h1>
+            <p class="text-secondary small mb-0">Recruiter telemetry & platform analytics for educational demonstration</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/admin_products" class="btn btn-primary-custom" style="background:#f59e0b; border-color:#f59e0b;">📦 Products Console</a>
+            <a href="/" class="btn btn-secondary-custom">Exit Console</a>
+        </div>
+    </div>
+
+    <!-- Telemetry Cards Grid -->
+    <div class="row g-4 mb-5">
+        <!-- Total Visitors -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Total Visitors</span>
+                    <strong class="text-white h2 d-block my-2 fw-bold">{{ total_visitors }}</strong>
+                </div>
+                <span class="text-success small fw-semibold">👥 Index Page Loads</span>
+            </div>
+        </div>
+
+        <!-- Google Auth Users -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Google Auth Users</span>
+                    <strong class="text-white h2 d-block my-2 fw-bold">{{ auth_users }}</strong>
+                </div>
+                <span class="text-primary small fw-semibold">🔑 Google OAuth Logins</span>
+            </div>
+        </div>
+
+        <!-- Orders Created -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Orders Created</span>
+                    <strong class="text-success h2 d-block my-2 fw-bold">{{ orders_count }}</strong>
+                </div>
+                <span class="text-success small fw-semibold">🛒 PayPal Checkout sessions</span>
+            </div>
+        </div>
+
+        <!-- Products Viewed -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Products Viewed</span>
+                    <strong class="text-white h2 d-block my-2 fw-bold">{{ products_viewed }}</strong>
+                </div>
+                <span class="text-info small fw-semibold">👁️ Product Detail Page views</span>
+            </div>
+        </div>
+
+        <!-- Support Clicks -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Support Clicks</span>
+                    <strong class="text-warning h2 d-block my-2 fw-bold">{{ support_clicks }}</strong>
+                </div>
+                <span class="text-warning small fw-semibold">❤️ Simulated Donation clicks</span>
+            </div>
+        </div>
+
+        <!-- Theme Preference -->
+        <div class="col-md-4 col-sm-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <span class="text-secondary small text-uppercase tracking-wider">Theme Swaps</span>
+                    <strong class="text-white h2 d-block my-2 fw-bold">{{ theme_clicks }}</strong>
+                </div>
+                <span class="text-muted small fw-semibold">☀️ Light/Dark toggler clicks</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Row: Most Viewed & Quick Actions -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="glass-card shadow-lg p-4 h-100">
+                <h3 class="h5 text-white mb-3">🔥 Most Viewed Product</h3>
+                <div class="p-4 border border-secondary border-opacity-10 rounded bg-dark bg-opacity-20 text-center my-3">
+                    <strong class="text-white h4 d-block">{{ most_viewed }}</strong>
+                </div>
+                <p class="text-secondary small m-0">This displays the product name with the highest cumulative page clicks inside the database catalog.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="glass-card shadow-lg p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h3 class="h5 text-white mb-3">⚡ Console Quick Actions</h3>
+                    <p class="text-secondary small">Execute administrative triggers instantly inside this control panel.</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/admin_products" class="btn btn-secondary-custom btn-sm">Manage Products</a>
+                    <a href="/admin_orders" class="btn btn-secondary-custom btn-sm">Verify Orders</a>
+                    <a href="/admin_users" class="btn btn-secondary-custom btn-sm">List Google Users</a>
+                    <a href="/admin_security" class="btn btn-secondary-custom btn-sm">Review Defenses</a>
+                    <a href="/admin_contacts" class="btn btn-secondary-custom btn-sm">Contact Messages</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Feed Grid -->
+    <div class="row g-4">
+        <!-- Recent Orders -->
+        <div class="col-lg-6">
+            <div class="glass-card shadow-lg p-4">
+                <h3 class="h5 text-white mb-4">Recent Demo Orders</h3>
+                {% if recent_orders %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle border-secondary small">
+                        <thead>
+                            <tr class="text-secondary">
+                                <th>Order ID</th>
+                                <th>Buyer</th>
+                                <th>Amount</th>
+                                <th class="text-end">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                            <tr>
+                                <td class="fw-bold text-white">#{{ order.id }}</td>
+                                <td class="text-secondary-emphasis">{{ order.buyer_name }}</td>
+                                <td class="text-success fw-semibold">${{ order.amount }}</td>
+                                <td class="text-end">
+                                    <span class="badge bg-success-subtle text-success border border-success" style="font-size:0.65rem;">{{ order.status }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-secondary small m-0 py-3 text-center">No orders registered in database yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Registered Users -->
+        <div class="col-lg-6">
+            <div class="glass-card shadow-lg p-4">
+                <h3 class="h5 text-white mb-4">Recent Google Logins</h3>
+                {% if recent_users %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle border-secondary small">
+                        <thead>
+                            <tr class="text-secondary">
+                                <th>Google User</th>
+                                <th>Role</th>
+                                <th class="text-end">Last Login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in recent_users %}
+                            <tr>
+                                <td class="text-white fw-medium">
+                                    {% if user.avatar_url %}
+                                    <img src="{{ user.avatar_url }}" class="rounded-circle me-1" style="width:20px; height:20px;" alt="Avatar">
+                                    {% endif %}
+                                    {{ user.display_name }}
+                                </td>
+                                <td>
+                                    <span class="badge {% if user.role == 'admin' %}bg-warning text-dark{% else %}bg-primary{% endif %}" style="font-size:0.6rem;">{{ user.role }}</span>
+                                </td>
+                                <td class="text-end text-secondary small">{{ user.last_login }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-secondary small m-0 py-3 text-center">No login traces captured.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

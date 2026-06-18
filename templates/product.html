@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-5 align-items-center animate-fade-in-up">
+    
+    <!-- Product Image Display -->
+    <div class="col-md-6">
+        <div class="glass-card p-3 shadow-lg">
+            <img src="{{ url_for('static', filename='img/' + product.image) }}" 
+                 class="img-fluid rounded" 
+                 style="max-height: 450px; width: 100%; object-fit: cover;" 
+                 alt="{{ product.name }} product details photo">
+        </div>
+    </div>
+
+    <!-- Product Details Content -->
+    <div class="col-md-6">
+        <div class="glass-card shadow-lg">
+            <a href="/" class="small text-secondary mb-3 d-inline-block">← Back to Products Catalog</a>
+            
+            <h1 class="display-5 fw-bold text-white mb-2">{{ product.name }}</h1>
+            <h2 class="text-success fw-bold mb-4">$ {{ product.price }}</h2>
+
+            <p class="text-secondary mb-4">
+                This is a high-quality gaming accessory catalogued on the Riyora demonstration environment. 
+                Features responsive mechanical keys, low-latency data feedback, and high durability suitable for elite performance.
+            </p>
+
+            <hr class="border-secondary mb-4">
+
+            <!-- Stock status metrics -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="text-secondary small">Availability:</span>
+                {% if product.stock == 0 %}
+                    <span class="badge bg-danger px-3 py-2" aria-label="Out of stock">Out of Stock</span>
+                {% elif product.stock <= 5 %}
+                    <span class="badge bg-warning text-dark px-3 py-2" aria-label="Low stock indicator">Only {{ product.stock }} left!</span>
+                {% else %}
+                    <span class="badge bg-success px-3 py-2" aria-label="In stock indicator">In Stock ({{ product.stock }} units)</span>
+                {% endif %}
+            </div>
+
+            <!-- Form with CSRF tokens -->
+            {% if product.stock > 0 %}
+            <form action="/add_to_cart" method="POST" aria-label="Add to cart product action">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                    Add to Cart 🛒
+                </button>
+            </form>
+            {% else %}
+            <button class="btn btn-secondary-custom w-100 py-3" disabled aria-label="Add to cart button disabled">
+                Out of Stock
+            </button>
+            {% endif %}
+
+            <div class="mt-4 p-3 border border-secondary rounded bg-dark">
+                <span class="text-warning fw-bold small">💳 Secure Checkout Simulation:</span>
+                <p class="text-secondary m-0 small">
+                    Orders generated on this website are simulated. PayPal checkout routes are configured for testing purposes.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

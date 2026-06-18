@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riyora</title>
+    
+    <!-- Meta tags for SEO & Security -->
+    <meta name="description" content="Riyora is a portfolio-grade authentication, security, and commerce demonstration platform built with Flask, Google OAuth, PayPal integration, and modern UI/UX practices.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Fullscreen Project Disclaimer Modal -->
+    <div class="disclaimer-overlay" id="disclaimerOverlay" style="display: none;" role="alertdialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+        <div class="disclaimer-content text-center">
+            <h2 id="modalTitle" class="mb-4 text-warning">🔒 Riyora Demo Project</h2>
+            <hr class="border-secondary mb-4">
+            
+            <p id="modalDesc" class="text-light mb-3 text-start" lang="en">
+                <strong>English Notice:</strong> This website is an educational e-commerce demonstration project created for learning, portfolio, and academic purposes. Products, orders, payments, and transactions displayed on this platform are not real commercial offerings and should not be considered actual purchases.
+            </p>
+            
+            <p class="text-light mb-4 text-start" lang="hi">
+                <strong>Hindi Notice:</strong> यह वेबसाइट एक शैक्षणिक एवं पोर्टफोलियो उद्देश्य से बनाई गई ई-कॉमर्स डेमो परियोजना है। इस प्लेटफॉर्म पर प्रदर्शित उत्पाद, ऑर्डर, भुगतान और लेन-देन वास्तविक व्यावसायिक सेवाएँ नहीं हैं और इन्हें वास्तविक खरीदारी नहीं माना जाना चाहिए।
+            </p>
+            
+            <div class="glass-card bg-opacity-10 p-3 mb-4 text-start">
+                <span class="text-warning fw-bold">⚠️ Additional Note:</span>
+                <p class="text-secondary m-0 small">User information may be periodically removed because this platform is intended solely for demonstration and testing.</p>
+            </div>
+            
+            <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="uiverse-continue-btn" id="continueDisclaimerBtn" aria-label="Accept terms and continue">Continue</button>
+                <button type="button" class="btn btn-secondary-custom px-4 rounded-pill" id="exitDisclaimerBtn" aria-label="Exit the demonstration website">Exit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Expired Modal Overlay -->
+    <div class="disclaimer-overlay" id="sessionExpiredOverlay" style="display: none;" role="alertdialog" aria-modal="true" aria-labelledby="sessionExpiredTitle" aria-describedby="sessionExpiredDesc">
+        <div class="disclaimer-content text-center">
+            <span class="display-3 text-danger d-block mb-3" role="img" aria-label="Warning shield">⚠️</span>
+            <h2 id="sessionExpiredTitle" class="mb-4 text-danger">Session Expired</h2>
+            <hr class="border-secondary mb-4">
+            <p id="sessionExpiredDesc" class="text-light mb-4">
+                Your session has expired due to inactivity. All cart state and session files have been invalidated.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/login" class="uiverse-continue-btn text-decoration-none">Login Again</a>
+                <a href="/" class="btn btn-secondary-custom px-4 rounded-pill">Return Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay during payment capturing -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;" role="status" aria-live="polite">
+        <div class="spinner-custom"></div>
+        <h3 class="h5 text-white" id="loadingMessage">Processing Payment...</h3>
+        <p class="text-secondary small">Please do not refresh the page or close your browser</p>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer" style="z-index: 10000;" role="log" aria-live="polite"></div>
+
+    <!-- Persistent Header Site Banner -->
+    <div class="persistent-header-banner text-center" role="status">
+        Educational Demo • Portfolio Project • No Real Purchases
+    </div>
+
+    <!-- Sticky Glassmorphic Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom py-3" aria-label="Main Navigation">
+        <div class="container-fluid px-4 d-flex align-items-center justify-content-between flex-wrap">
+            
+            <!-- Left Group: Logo and Nav Links -->
+            <div class="d-flex align-items-center">
+                <!-- Brand Logo -->
+                <a class="navbar-brand-custom me-4" href="/">
+                    🔒 Riyora
+                </a>
+
+                <!-- Collapsible Navigation links (Desktop) -->
+                <div class="collapse navbar-collapse" id="navContent">
+                    <ul class="navbar-nav me-auto mb-0 align-items-center gap-1">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/#products">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/#architecture">Architecture</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/#security">Security</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom py-1 px-3 text-nowrap" href="/#support">Support</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Group: Search, Cart, Theme, Dropdown, Hamburger -->
+            <div class="d-flex align-items-center gap-2 flex-nowrap">
+                
+                <!-- Search Form -->
+                <form class="d-none d-sm-flex position-relative align-items-center m-0" action="/" method="GET" role="search">
+                    <input class="form-control form-input-custom pe-5 py-1" style="max-width: 140px; font-size: 0.85rem;" type="search" name="search" placeholder="Search..." aria-label="Search items in demo">
+                    <button class="btn border-0 position-absolute end-0 top-50 translate-middle-y me-1 text-secondary p-0" type="submit" aria-label="Submit search">🔍</button>
+                </form>
+
+                <!-- Cart Link -->
+                <a href="/cart" class="btn btn-primary-custom px-3 py-1.5 d-flex align-items-center gap-1.5 text-nowrap" style="font-size: 0.85rem;" aria-label="Open your demo cart">
+                    🛒 <span class="d-none d-md-inline">Cart</span> <span class="badge bg-dark text-white rounded-pill px-2" style="font-size: 0.7rem;">{{ cart_count if cart_count else 0 }}</span>
+                </a>
+
+                <!-- Theme Toggle Switch -->
+                <button type="button" class="theme-switch-btn" id="themeToggleBtn" aria-label="Toggle theme mode" style="flex-shrink:0;">
+                    <span id="themeSunIcon">☀️</span>
+                    <span id="themeMoonIcon" style="display: none;">🌙</span>
+                </button>
+
+                <!-- Profile Dropdown -->
+                {% if session.get('user_id') %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary-custom dropdown-toggle px-2 py-1.5 d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.85rem; flex-shrink: 0; background: transparent; border: 1px solid var(--card-border);">
+                            {% if session.get('picture') %}
+                                <img src="{{ session.get('picture') }}" alt="Avatar" class="rounded-circle" style="width: 22px; height: 22px; object-fit: cover;">
+                            {% else %}
+                                <span style="font-size: 1rem;">👤</span>
+                            {% endif %}
+                            <span class="d-none d-lg-inline text-white">{{ session.get('name', 'User') }}</span>
+                            <span class="badge {% if session.get('admin') %}bg-warning text-dark{% else %}bg-primary{% endif %}" style="font-size: 0.65rem; padding: 2px 6px;">{{ 'Admin' if session.get('admin') else 'User' }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end border-0 shadow-lg mt-2 p-3" style="min-width: 260px; background-color: var(--card-bg); border: 1px solid var(--card-border) !important;">
+                            <!-- Dropdown Header info -->
+                            <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom border-secondary">
+                                {% if session.get('picture') %}
+                                    <img src="{{ session.get('picture') }}" alt="Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; color: white;">👤</div>
+                                {% endif %}
+                                <div style="line-height: 1.2;">
+                                    <strong class="text-white d-block" style="font-size: 0.9rem;">{{ session.get('name') }}</strong>
+                                    <span class="text-secondary small d-block" style="font-size: 0.75rem; word-break: break-all;">{{ session.get('email') }}</span>
+                                    <span class="badge {% if session.get('admin') %}bg-warning text-dark{% else %}bg-primary{% endif %} mt-1" style="font-size: 0.65rem;">{{ 'Admin' if session.get('admin') else 'User' }}</span>
+                                </div>
+                            </div>
+                            <li><a class="dropdown-item py-2 rounded" href="/profile">Profile</a></li>
+                            <li><a class="dropdown-item py-2 rounded" href="/profile#orders">Orders</a></li>
+                            <li><a class="dropdown-item py-2 rounded" href="/#support">Support Project</a></li>
+                            {% if session.get('admin') %}
+                                <li><a class="dropdown-item py-2 rounded text-warning" href="/admin_dashboard">Admin Dashboard</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider border-secondary"></li>
+                            <li><a class="dropdown-item text-danger py-2 rounded" href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="/login" class="btn btn-secondary-custom px-3 py-1.5 text-nowrap" style="font-size: 0.85rem;" aria-label="Sign In">Sign In</a>
+                {% endif %}
+
+                <!-- Hamburger Toggler for Mobile/Tablet -->
+                <button class="navbar-toggler border-0 shadow-none p-1 ms-1 d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content wrapper -->
+    <div class="main-wrapper container mt-5">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Modern Footer with Legal Notices -->
+    <footer class="footer-custom py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                
+                <!-- Project Section -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-3">Project Overview</h5>
+                    <p class="small text-secondary-emphasis">
+                        Riyora is a portfolio-ready, educational e-commerce demonstration showcasing secure web design, SQLite integrations, and modern front-end concepts.
+                    </p>
+                </div>
+                
+                <!-- Security Focus -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-3">Security Features</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li>🔒 CSRF & Rate Limiting</li>
+                        <li>🛡     Session Expire Middlewares</li>
+                        <li>🔑 Bcrypt Password Hashing</li>
+                        <li>🔌 Google OAuth 2.0 Auth</li>
+                    </ul>
+                </div>
+                
+                <!-- Technology Stack -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-3">Technology Stack</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-secondary-emphasis">
+                        <li>Core: Python Flask</li>
+                        <li>Database: SQLite3</li>
+                        <li>Frontend: CSS3 / Vanilla JS</li>
+                        <li>Deploy: Gunicorn / Docker</li>
+                    </ul>
+                </div>
+                
+                <!-- Support & Links -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-3">Resources & Contact</h5>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                        <li><a href="/#support">Support Project</a></li>
+                        <li><a href="/#features">Case Study Details</a></li>
+                        <li><a href="/health">System Health check</a></li>
+                        <li>Created by: Dev Sharma, Afroj Ansari, Akash Saini, Himanshu</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary my-4">
+
+            <!-- Legal Compliance notice -->
+            <div class="row align-items-center">
+                <div class="col-md-8 text-center text-md-start mb-3 mb-md-0">
+                    <p class="small text-secondary m-0">
+                        <strong>Legal Compliance Notice:</strong> This project is intended solely for educational, portfolio, and demonstration purposes. Products, orders, and payments shown on this platform do not represent real commercial transactions unless explicitly stated.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <span class="small text-secondary-emphasis">
+                        © 2026 Riyora • Educational Demonstration Project
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS CDN (Removing broken integrity attribute to eliminate console errors) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Custom JS Script -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+    <!-- Render Toasts from Flask Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            {% for category, message in messages %}
+              window.showToast("{{ message }}", "{{ category if category else 'info' }}");
+            {% endfor %}
+          });
+        </script>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>

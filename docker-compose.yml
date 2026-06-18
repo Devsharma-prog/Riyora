@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - SECRET_KEY=default_composed_secret_key_1234
+      - GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=your-google-client-secret
+      - PAYPAL_CLIENT_ID=your-paypal-client-id
+      - PAYPAL_SECRET=your-paypal-secret
+      - UPI_ID=secureshop@upi
+      - DATA_RETENTION_HOURS=24
+      - SESSION_COOKIE_SECURE=False
+    restart: always

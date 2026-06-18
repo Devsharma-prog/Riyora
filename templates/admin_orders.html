@@ -1,0 +1,84 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="mb-5">
+        <h1 class="h2 text-white mb-1">Orders List</h1>
+        <p class="text-secondary small mb-0">Monitor and update delivery tracking states for demo orders</p>
+    </div>
+
+    <!-- Orders list table -->
+    <div class="glass-card shadow-lg p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle border-secondary">
+                <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th scope="col" class="py-3">Order ID</th>
+                        <th scope="col" class="py-3">Buyer Name</th>
+                        <th scope="col" class="py-3">Buyer Email</th>
+                        <th scope="col" class="py-3">Amount</th>
+                        <th scope="col" class="py-3">Date</th>
+                        <th scope="col" class="py-3">Tracking State</th>
+                        <th scope="col" class="py-3 text-center">Status Action</th>
+                        <th scope="col" class="py-3 text-center">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="py-3 fw-bold text-white">#{{ order.id }}</td>
+                        <td class="py-3 text-secondary-emphasis">{{ order.buyer_name }}</td>
+                        <td class="py-3 text-secondary-emphasis small">{{ order.buyer_email }}</td>
+                        <td class="py-3"><span class="text-success fw-bold">${{ order.amount }}</span></td>
+                        <td class="py-3 text-secondary small">{{ order.created_at }}</td>
+                        
+                        <!-- Tracking State -->
+                        <td class="py-3">
+                            {% if order.status == "PENDING" %}
+                                <span class="badge bg-secondary border border-secondary px-3 py-1">Pending</span>
+                            {% elif order.status == "PROCESSING" %}
+                                <span class="badge bg-info text-dark border border-info px-3 py-1">Processing</span>
+                            {% elif order.status == "SHIPPED" %}
+                                <span class="badge bg-primary border border-primary px-3 py-1">Shipped</span>
+                            {% elif order.status == "DELIVERED" %}
+                                <span class="badge bg-success border border-success px-3 py-1">Delivered</span>
+                            {% else %}
+                                <span class="badge bg-success border border-success px-3 py-1">Completed</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Status Action form -->
+                        <td class="py-3 text-center">
+                            <form action="/admin_update_order" method="POST" class="d-flex align-items-center justify-content-center gap-2">
+                                <!-- CSRF Token -->
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                
+                                <select name="status" class="form-select form-input-custom form-select-sm" style="width: auto; padding: 4px 30px 4px 10px;" aria-label="Change order status">
+                                    <option value="PENDING" {% if order.status == 'PENDING' %}selected{% endif %}>Pending</option>
+                                    <option value="PROCESSING" {% if order.status == 'PROCESSING' %}selected{% endif %}>Processing</option>
+                                    <option value="SHIPPED" {% if order.status == 'SHIPPED' %}selected{% endif %}>Shipped</option>
+                                    <option value="DELIVERED" {% if order.status == 'DELIVERED' %}selected{% endif %}>Delivered</option>
+                                    <option value="COMPLETED" {% if order.status == 'COMPLETED' %}selected{% endif %}>Completed</option>
+                                </select>
+                                
+                                <button type="submit" class="btn btn-sm btn-secondary-custom px-3">Update</button>
+                            </form>
+                        </td>
+
+                        <!-- Items Details link -->
+                        <td class="py-3 text-center">
+                            <a href="/admin_order_details/{{ order.id }}" class="btn btn-sm btn-secondary-custom px-3">
+                                Items
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

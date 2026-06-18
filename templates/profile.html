@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container animate-fade-in-up">
+
+    <!-- Profile Overview Cards Grid -->
+    <div class="row g-4 mb-5">
+        <!-- Main Profile Details Card -->
+        <div class="col-lg-8">
+            <div class="glass-card shadow-lg h-100 p-5">
+                <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-4">
+                    <!-- Google Avatar -->
+                    <div class="flex-shrink-0">
+                        {% if db_user and db_user.avatar_url %}
+                            <img src="{{ db_user.avatar_url }}" alt="Google Profile Avatar" class="rounded-circle border border-secondary border-2 shadow" style="width: 100px; height: 100px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center border border-secondary border-2 shadow" style="width: 100px; height: 100px; font-size: 3rem;">👤</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Profile Bio / Details -->
+                    <div class="flex-grow-1 text-center text-sm-start">
+                        <span class="badge bg-indigo-glow text-accent-color mb-2">👤 Profile Dashboard</span>
+                        <h1 class="h2 text-white font-display fw-bold mb-1">{{ db_user.display_name if db_user else session.get('name') }}</h1>
+                        <p class="text-secondary small mb-3">{{ db_user.email if db_user else session.get('email') }}</p>
+                        
+                        <div class="d-flex flex-wrap justify-content-center justify-content-sm-start gap-2 mb-0">
+                            <span class="badge {% if session.get('admin') %}bg-warning text-dark{% else %}bg-primary{% endif %} px-3 py-1.5" style="font-size: 0.8rem;">Role: {{ 'Administrator' if session.get('admin') else 'User' }}</span>
+                            <span class="badge bg-success px-3 py-1.5" style="font-size: 0.8rem;">Status: Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-secondary my-4">
+
+                <!-- Meta Specs Table -->
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20">
+                            <span class="text-secondary-emphasis small d-block mb-1">Authentication Provider</span>
+                            <strong class="text-white small">Google OAuth 2.0 Identity</strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20">
+                            <span class="text-secondary-emphasis small d-block mb-1">Google User ID (Sub)</span>
+                            <code class="text-accent-color small">{{ db_user.google_id if db_user and db_user.google_id else 'N/A' }}</code>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20">
+                            <span class="text-secondary-emphasis small d-block mb-1">Last Secure Login</span>
+                            <span class="text-white small">{{ db_user.last_login if db_user and db_user.last_login else 'Just now' }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20">
+                            <span class="text-secondary-emphasis small d-block mb-1">Account Creation Date</span>
+                            <span class="text-white small">{{ db_user.created_at if db_user else 'Today' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar / Secondary Actions Card -->
+        <div class="col-lg-4">
+            <div class="glass-card shadow-lg h-100 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <h3 class="h5 text-white mb-3">Support Activity</h3>
+                    <p class="text-secondary small mb-4">
+                        Thank you for exploring our demonstration portfolio. Support clicks and checkout activities help test and log telemetry metrics.
+                    </p>
+                    
+                    <div class="p-3 border border-success border-opacity-20 rounded bg-success bg-opacity-10 text-center mb-4">
+                        <span class="text-secondary small d-block mb-1">Simulated Project Support status</span>
+                        <strong class="text-success h4 m-0 d-block">✓ ACTIVE</strong>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2">
+                    <a href="/cart" class="btn btn-primary-custom w-100 py-3">Checkout Cart 🛒</a>
+                    <a href="/logout" class="btn btn-secondary-custom w-100 py-3">Logout Session</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction History Block -->
+    <div class="glass-card shadow-lg p-5">
+        <div class="border-bottom border-secondary pb-3 mb-4">
+            <h2 class="h4 text-white m-0">Demo Order History</h2>
+            <p class="text-secondary small m-0">Track your educational demo transactions and download PDF invoices</p>
+        </div>
+
+        {% if orders %}
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle border-secondary">
+                <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th scope="col" class="py-3">Order ID</th>
+                        <th scope="col" class="py-3">Date</th>
+                        <th scope="col" class="py-3">Amount</th>
+                        <th scope="col" class="py-3">Status</th>
+                        <th scope="col" class="py-3" style="min-width: 200px;">Delivery State</th>
+                        <th scope="col" class="py-3 text-center">Invoice</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <!-- Order ID -->
+                        <td class="py-3 fw-bold text-white">#{{ order.id }}</td>
+                        
+                        <!-- Created Date -->
+                        <td class="py-3 text-secondary-emphasis small">{{ order.created_at }}</td>
+                        
+                        <!-- Amount -->
+                        <td class="py-3">
+                            <span class="text-success fw-bold">${{ order.amount }}</span>
+                        </td>
+                        
+                        <!-- Status Badge -->
+                        <td class="py-3">
+                            {% if order.status == "PENDING" %}
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary px-3 py-1">Pending</span>
+                            {% elif order.status == "PROCESSING" %}
+                                <span class="badge bg-info-subtle text-info border border-info px-3 py-1">Processing</span>
+                            {% elif order.status == "SHIPPED" %}
+                                <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1">Shipped</span>
+                            {% elif order.status == "DELIVERED" %}
+                                <span class="badge bg-success-subtle text-success border border-success px-3 py-1">Delivered</span>
+                            {% else %}
+                                <span class="badge bg-success-subtle text-success border border-success px-3 py-1">Completed</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Tracking Progress Bar -->
+                        <td class="py-3">
+                            {% set pct = 20 %}
+                            {% set bar_class = "bg-secondary" %}
+                            
+                            {% if order.status == "PENDING" %}
+                                {% set pct = 20 %}
+                                {% set bar_class = "bg-secondary" %}
+                            {% elif order.status == "PROCESSING" %}
+                                {% set pct = 45 %}
+                                {% set bar_class = "bg-info" %}
+                            {% elif order.status == "SHIPPED" %}
+                                {% set pct = 75 %}
+                                {% set bar_class = "bg-primary" %}
+                            {% elif order.status == "DELIVERED" or order.status == "COMPLETED" %}
+                                {% set pct = 100 %}
+                                {% set bar_class = "bg-success" %}
+                            {% endif %}
+                            
+                            <div class="progress bg-dark border border-secondary" style="height: 8px;" role="progressbar" aria-label="Order progress tracker" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar {{ bar_class }}" style="width: {{ pct }}%"></div>
+                            </div>
+                        </td>
+
+                        <!-- Invoice Download Link -->
+                        <td class="py-3 text-center">
+                            <a href="/invoice/{{ order.id }}" 
+                               class="btn btn-secondary-custom btn-sm px-3 py-1 rounded-pill" 
+                               aria-label="Download PDF receipt for order number {{ order.id }}">
+                                Download PDF
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Empty Orders State -->
+        <div class="text-center py-5">
+            <span class="display-4 d-block mb-3" role="img" aria-label="Package box icon">📦</span>
+            <h3 class="text-white h5 mb-2">No orders recorded</h3>
+            <p class="text-secondary small mb-4">You have not completed any mock payments on this session.</p>
+            <a href="/" class="btn btn-primary-custom px-4 py-2">Explore Products</a>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

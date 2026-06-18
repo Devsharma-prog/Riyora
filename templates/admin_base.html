@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riyora Admin Console</title>
+    
+    <!-- Meta tag for CSRF -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Persistent Header Banner -->
+    <div class="persistent-header-banner text-center" role="status">
+        🔒 Security & Admin Management Console
+    </div>
+
+    <!-- Admin Glassmorphic Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom py-3" aria-label="Admin Navigation">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom text-warning" href="/admin_dashboard">
+                ⚙️ Riyora Admin
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav" aria-controls="adminNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_sales">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_users">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_security">Security</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_status">Status</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom py-1 px-2 text-nowrap" href="/admin_contacts">Messages</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-3">
+                    
+                    <!-- Search Products -->
+                    <form class="d-flex position-relative align-items-center" action="/admin_search" method="GET" role="search">
+                        <input class="form-control form-input-custom pe-5" type="search" name="q" placeholder="Search products..." aria-label="Search admin products">
+                        <button class="btn border-0 position-absolute end-0 top-50 translate-middle-y me-1 text-secondary" type="submit" aria-label="Submit search">🔍</button>
+                    </form>
+
+                    <!-- User Email info -->
+                    <span class="small text-secondary">{{ session.get('email') }}</span>
+
+                    <!-- Return to Site -->
+                    <a href="/" class="btn btn-secondary-custom btn-sm">Exit Admin</a>
+
+                    <!-- Logout -->
+                    <a href="/logout" class="btn btn-outline-danger btn-sm rounded-pill px-3">Logout</a>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="main-wrapper container mt-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Legal Footer -->
+    <footer class="footer-custom py-4 mt-5">
+        <div class="container text-center">
+            <span class="small text-secondary-emphasis">
+                Riyora Admin Console • Educational Demonstration Project • © 2026
+            </span>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

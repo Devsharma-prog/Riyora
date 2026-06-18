@@ -1,0 +1,43 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="mb-5">
+        <h1 class="h2 text-white mb-1">Security Dashboard Controls</h1>
+        <p class="text-secondary small mb-0">Active environment parameters, middleware security configs, and cryptographic controls verification</p>
+    </div>
+
+    <!-- Security status matrix -->
+    <div class="glass-card shadow-lg p-5">
+        <h3 class="h5 text-white mb-4 border-bottom border-secondary pb-3">Active Defense Configurations</h3>
+        
+        <div class="row g-4">
+            {% for key, val in security_status.items() %}
+            <div class="col-md-6">
+                <div class="p-3 border border-secondary border-opacity-20 rounded bg-dark bg-opacity-20 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-secondary-emphasis small d-block mb-1 text-uppercase tracking-wider" style="font-size: 0.75rem;">
+                            {{ key.replace('_', ' ') }}
+                        </span>
+                        <strong class="text-white small">{{ val }}</strong>
+                    </div>
+                    <span class="text-success h4 m-0">✓</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bg-dark bg-opacity-10 border border-success border-opacity-20 rounded p-4 mt-5">
+            <h4 class="h6 text-success fw-bold mb-2">🛡️ Security Standards Compliance:</h4>
+            <ul class="text-secondary small m-0 p-0 ps-3">
+                <li class="mb-1"><strong>Cross-Site Request Forgery (CSRF):</strong> Double-Submit Cookie WTF protection blocks any session modifications outside the app interface.</li>
+                <li class="mb-1"><strong>Brute Force Defense:</strong> Flask-Limiter monitors endpoint requests, throttling repeated inputs dynamically in memory.</li>
+                <li class="mb-1"><strong>SQL Injection (SQLi):</strong> Database requests are executed via parameterized query vectors. Raw strings are never evaluated inside sqlite statements.</li>
+                <li class="mb-1"><strong>Session Theft (XSS):</strong> Authentication variables are sealed with HttpOnly cookie parameters, blocking JavaScript reader objects.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="animate-fade-in-up">
+    
+    <div class="mb-5">
+        <h1 class="h2 text-white mb-1">User Database Console</h1>
+        <p class="text-secondary small mb-0">Monitor Google OAuth authenticated users, session status logs, and RBAC roles</p>
+    </div>
+
+    <!-- Users table -->
+    <div class="glass-card shadow-lg p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle border-secondary">
+                <thead>
+                    <tr class="text-secondary small text-uppercase">
+                        <th scope="col" class="py-3">User ID</th>
+                        <th scope="col" class="py-3">Avatar</th>
+                        <th scope="col" class="py-3">Display Name</th>
+                        <th scope="col" class="py-3">Google Email</th>
+                        <th scope="col" class="py-3">Google ID (Sub)</th>
+                        <th scope="col" class="py-3">Role</th>
+                        <th scope="col" class="py-3 text-end">Last Secure Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td class="py-3 fw-bold text-white">#{{ user.id }}</td>
+                        <td class="py-3">
+                            {% if user.avatar_url %}
+                                <img src="{{ user.avatar_url }}" alt="{{ user.display_name }} Avatar" class="rounded-circle border border-secondary shadow-sm" style="width: 30px; height: 30px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 0.8rem;">👤</div>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 text-white fw-medium">{{ user.display_name if user.display_name else 'Demo User' }}</td>
+                        <td class="py-3 text-secondary-emphasis small">{{ user.email }}</td>
+                        <td class="py-3"><code class="text-accent-color small">{{ user.google_id if user.google_id else 'N/A' }}</code></td>
+                        <td class="py-3">
+                            <span class="badge {% if user.role == 'admin' %}bg-warning text-dark{% else %}bg-primary{% endif %} px-2.5 py-1" style="font-size: 0.7rem;">
+                                {{ user.role | upper }}
+                            </span>
+                        </td>
+                        <td class="py-3 text-end text-secondary small">{{ user.last_login if user.last_login else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
