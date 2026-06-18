@@ -1,7 +1,15 @@
 from flask import Flask, render_template, request, jsonify, redirect, session, send_file, url_for
 import sqlite3
 import os
+import sys
 import requests
+
+# Reconfigure stdout for UTF-8 encoding support on Windows terminal
+if sys.stdout and sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 import io
 import secrets
 import time
@@ -48,10 +56,23 @@ def run_startup_check():
         print("⚠ Google OAuth is disabled/unconfigured.")
         
     # PayPal Check & Validation
-    paypal_id = os.getenv("PAYPAL_CLIENT_ID")
-    paypal_secret = os.getenv("PAYPAL_SECRET")
-    paypal_mode = os.getenv("PAYPAL_MODE", "sandbox").lower()
+    paypal_id = os.getenv("PAYPAL_CLIENT_ID", "").strip()
+    paypal_secret = os.getenv("PAYPAL_SECRET", "").strip()
+    paypal_mode = os.getenv("PAYPAL_MODE", "sandbox").strip().lower()
     
+    if paypal_id:
+        print("✓ PAYPAL_CLIENT_ID loaded")
+        prefix = paypal_id[:8] if len(paypal_id) >= 8 else paypal_id
+        print(f"Client ID Prefix: {prefix}...")
+    else:
+        print("✗ PAYPAL_CLIENT_ID missing")
+        
+    if paypal_secret:
+        print("✓ PAYPAL_SECRET loaded")
+        print(f"Secret Length: {len(paypal_secret)}")
+    else:
+        print("✗ PAYPAL_SECRET missing")
+        
     if paypal_id and paypal_secret:
         if paypal_mode == "live":
             print("✓ PayPal Live Mode Active")
@@ -95,13 +116,69 @@ app.secret_key = secret_key
 
 
 def get_paypal_api_base():
-    mode = os.getenv("PAYPAL_MODE", "sandbox").lower()
+    mode = os.getenv("PAYPAL_MODE", "sandbox").strip().lower()
     if mode == "live":
         return "https://api-m.paypal.com"
     return "https://api-m.sandbox.paypal.com"
 
+
+def get_paypal_access_token():
+    paypal_client = os.getenv("PAYPAL_CLIENT_ID", "").strip()
+    paypal_secret = os.getenv("PAYPAL_SECRET", "").strip()
+    paypal_mode = os.getenv("PAYPAL_MODE", "sandbox").strip().lower()
+    
+    endpoint = "https://api-m.paypal.com" if paypal_mode == "live" else "https://api-m.sandbox.paypal.com"
+    token_url = f"{endpoint}/v1/oauth2/token"
+    
+    print("----------------------------------------")
+    print(f"PayPal Mode: {paypal_mode}")
+    print(f"Token URL: {token_url}")
+    print("Token Request Started")
+    
+    if not paypal_client or not paypal_secret:
+        print("Error: PayPal Client ID or Secret is missing.")
+        print("----------------------------------------")
+        return None
+        
+    try:
+        response = requests.post(
+            token_url,
+            auth=HTTPBasicAuth(paypal_client, paypal_secret),
+            data={"grant_type": "client_credentials"},
+            headers={
+                "Accept": "application/json",
+                "Accept-Language": "en_US"
+            }
+        )
+        print(f"Token Response Status: {response.status_code}")
+        print(f"Response Status: {response.status_code}")
+        
+        try:
+            response_json = response.json()
+        except Exception:
+            response_json = response.text
+            
+        log_body = response_json
+        if isinstance(response_json, dict) and "access_token" in response_json:
+            log_body = response_json.copy()
+            tok = log_body["access_token"]
+            log_body["access_token"] = f"{tok[:8]}... (length: {len(tok)})"
+            
+        print(f"Token Response Body: {log_body}")
+        print("----------------------------------------")
+        
+        if response.status_code == 200:
+            return response_json.get("access_token")
+        else:
+            return None
+    except Exception as e:
+        print(f"Token Request Exception: {e}")
+        print("----------------------------------------")
+        return None
+
+
 # Configure PayPal
-app.config['PAYPAL_CLIENT_ID'] = os.getenv("PAYPAL_CLIENT_ID")
+app.config['PAYPAL_CLIENT_ID'] = os.getenv("PAYPAL_CLIENT_ID", "").strip()
 
 # Initialize Security Extensions
 bcrypt = Bcrypt(app)
@@ -392,6 +469,26 @@ def health():
     return jsonify({"status": "healthy"}), 200
 
 
+# -------------------------
+# PayPal Health Check Endpoint
+# -------------------------
+@app.route('/paypal_health')
+@csrf.exempt
+def paypal_health():
+    paypal_id = os.getenv("PAYPAL_CLIENT_ID", "").strip()
+    paypal_secret = os.getenv("PAYPAL_SECRET", "").strip()
+    paypal_mode = os.getenv("PAYPAL_MODE", "sandbox").strip().lower()
+    
+    endpoint = "https://api-m.paypal.com" if paypal_mode == "live" else "https://api-m.sandbox.paypal.com"
+    
+    return jsonify({
+        "mode": paypal_mode,
+        "client_loaded": bool(paypal_id),
+        "secret_loaded": bool(paypal_secret),
+        "endpoint": endpoint
+    }), 200
+
+
 
 # -------------------------
 # Google Authentication
@@ -649,6 +746,7 @@ def remove_from_cart():
 @limiter.limit("10 per minute")
 @login_required
 def create_order():
+    print("Order Creation Started")
     if 'cart' not in session or not session['cart']:
         return jsonify({"error": "Cart is empty"}), 400
 
@@ -660,29 +758,60 @@ def create_order():
             total += product['price'] * quantity
     conn.close()
 
-    paypal_client = os.getenv("PAYPAL_CLIENT_ID")
-    paypal_secret = os.getenv("PAYPAL_SECRET")
+    paypal_client = os.getenv("PAYPAL_CLIENT_ID", "").strip()
+    paypal_secret = os.getenv("PAYPAL_SECRET", "").strip()
 
     if not paypal_client or not paypal_secret:
         # Mock payment order ID for offline sandbox fallback
         mock_id = f"MOCK-PAYPAL-{secrets.token_hex(8).upper()}"
+        print("Order Creation Mock Mode: Missing Credentials")
         return jsonify({"id": mock_id, "status": "CREATED"})
 
-    response = requests.post(
-        f"{get_paypal_api_base()}/v2/checkout/orders",
-        auth=HTTPBasicAuth(paypal_client, paypal_secret),
-        headers={"Content-Type": "application/json"},
-        json={
-            "intent": "CAPTURE",
-            "purchase_units": [{
-                "amount": {
-                    "currency_code": "USD",
-                    "value": f"{total:.2f}"
-                }
-            }]
-        }
-    )
-    return jsonify(response.json())
+    access_token = get_paypal_access_token()
+    if not access_token:
+        print("Access Token Retrieval Failed")
+        return jsonify({
+            "error": "PayPal Authentication Failed",
+            "details": {
+                "possible_causes": [
+                    "Incorrect Client ID",
+                    "Incorrect Secret",
+                    "Sandbox/Live mismatch (e.g. live mode active but sandbox credentials configured)",
+                    "PayPal developer account not activated or REST App disabled"
+                ]
+            }
+        }), 401
+
+    print("Access Token Retrieved")
+    
+    create_url = f"{get_paypal_api_base()}/v2/checkout/orders"
+    print("PayPal Order Request Sent")
+    
+    try:
+        response = requests.post(
+            create_url,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {access_token}"
+            },
+            json={
+                "intent": "CAPTURE",
+                "purchase_units": [{
+                    "amount": {
+                        "currency_code": "USD",
+                        "value": f"{total:.2f}"
+                    }
+                }]
+            }
+        )
+        print(f"PayPal Response Status: {response.status_code}")
+        response_json = response.json()
+        print(f"PayPal Response JSON: {response_json}")
+        
+        return jsonify(response_json)
+    except Exception as e:
+        print(f"PayPal Order Request Exception: {e}")
+        return jsonify({"error": "PayPal connection failed", "details": str(e)}), 500
 
 
 @app.route('/capture_payment', methods=['POST'])
@@ -693,8 +822,8 @@ def capture_payment():
     order_id = data.get("orderID")
     address = data.get("shipping_address", "")
 
-    paypal_client = os.getenv("PAYPAL_CLIENT_ID")
-    paypal_secret = os.getenv("PAYPAL_SECRET")
+    paypal_client = os.getenv("PAYPAL_CLIENT_ID", "").strip()
+    paypal_secret = os.getenv("PAYPAL_SECRET", "").strip()
 
     # Handle Mock Payment for offline testing
     if order_id and order_id.startswith("MOCK-PAYPAL"):
@@ -730,13 +859,30 @@ def capture_payment():
         session.pop("cart", None)
         return jsonify({"status": "success", "order_id": order_db_id})
 
+    access_token = get_paypal_access_token()
+    if not access_token:
+        print("Access Token Retrieval Failed for Capture")
+        return jsonify({
+            "error": "PayPal Authentication Failed",
+            "details": {
+                "possible_causes": [
+                    "Incorrect Client ID",
+                    "Incorrect Secret",
+                    "Sandbox/Live mismatch (e.g. live mode active but sandbox credentials configured)",
+                    "PayPal developer account not activated or REST App disabled"
+                ]
+            }
+        }), 401
+
     # Standard API Execution
     capture_url = f"{get_paypal_api_base()}/v2/checkout/orders/{order_id}/capture"
     try:
         response = requests.post(
             capture_url,
-            auth=HTTPBasicAuth(paypal_client, paypal_secret),
-            headers={"Content-Type": "application/json"}
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {access_token}"
+            }
         )
 
         capture_data = response.json()
